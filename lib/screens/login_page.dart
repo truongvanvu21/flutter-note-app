@@ -26,19 +26,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _login() async {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if(!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    final authProvider = context.read<AuthProvider>();
-    final error = await authProvider.login(
+    AuthProvider authProvider = Provider.of<AuthProvider>(context, listen:false);
+    String? error = await authProvider.login(
       email: _emailController.text,
       password: _passwordController.text,
     );
 
     setState(() => _isLoading = false);
-
-    if (!mounted) return;
 
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,27 +63,16 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Logo / Icon
-                  Icon(
-                    Icons.note_alt_rounded,
-                    size: 80,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  Icon(Icons.note_alt_rounded,size: 90, color: Theme.of(context).colorScheme.primary,),
                   const SizedBox(height: 16),
-                  Text(
-                    'Notes Manager',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Text('Notes App', textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Đăng nhập để tiếp tục',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 32),
 
@@ -158,10 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Chưa có tài khoản? ',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text('Chưa có tài khoản? ', style: Theme.of(context).textTheme.bodyMedium,),
                       TextButton(
                         onPressed: () {
                           Navigator.push(

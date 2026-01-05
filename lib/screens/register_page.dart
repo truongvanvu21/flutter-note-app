@@ -41,8 +41,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = false);
 
-    if (!mounted) return;
-
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error), backgroundColor: Colors.red),
@@ -54,11 +52,9 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.green,
         ),
       );
-      // Chuyển về trang đăng nhập thay vì trang chủ
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginPage()),
-        (route) => false,
       );
     }
   }
@@ -77,27 +73,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Header
-                  Icon(
-                    Icons.person_add_rounded,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  Icon(Icons.person_add_rounded, size: 90, color: Theme.of(context).colorScheme.primary,),
                   const SizedBox(height: 16),
-                  Text(
-                    'Tạo tài khoản mới',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Text('Tạo tài khoản mới', textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Điền thông tin để đăng ký',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 32),
 
@@ -115,9 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value == null || value.trim().isEmpty) {
                         return 'Vui lòng nhập email';
                       }
-                      if (!RegExp(
-                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                      ).hasMatch(value.trim())) {
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
                         return 'Email không hợp lệ';
                       }
                       return null;
@@ -135,11 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       prefixIcon: const Icon(Icons.lock_outline),
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
+                        icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility,),
                         onPressed: () {
                           setState(() => _obscurePassword = !_obscurePassword);
                         },
@@ -175,8 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         onPressed: () {
                           setState(
-                            () => _obscureConfirmPassword =
-                                !_obscureConfirmPassword,
+                            () => _obscureConfirmPassword =!_obscureConfirmPassword,
                           );
                         },
                       ),

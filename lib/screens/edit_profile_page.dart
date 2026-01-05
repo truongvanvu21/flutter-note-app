@@ -20,7 +20,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
 
-  // Màu xám nhẹ đồng bộ toàn app
   static const Color lightGrayBackground = Color(0xFFF5F7FA);
 
   @override
@@ -137,13 +136,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: colorScheme.primary.withOpacity(0.2),
+                      color: colorScheme.primary.withValues(alpha: 0.2),
                       width: 3,
                     ),
                   ),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: colorScheme.primaryContainer.withOpacity(0.5),
+                    backgroundColor: colorScheme.primaryContainer.withValues(alpha: 0.5),
                     child: Icon(
                       Icons.person_rounded,
                       size: 50,
@@ -318,7 +317,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           label: const Text('Đổi mật khẩu'),
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: Colors.orange,
+                            backgroundColor: const Color.fromARGB(255, 220, 139, 26),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -358,7 +357,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

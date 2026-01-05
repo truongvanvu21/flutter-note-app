@@ -17,7 +17,6 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   final _formKey = GlobalKey<FormState>();
   List<String> _selectedTags = [];
 
-  // Bảng màu pastel đồng bộ với trang chủ
   final List<Color> pastelColors = [
     Colors.blue.shade200,
     Colors.orange.shade200,
@@ -38,14 +37,16 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   }
 
   void _save() {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
-    final provider = Provider.of<NoteProvider>(context, listen: false);
+    final noteProvider = Provider.of<NoteProvider>(context, listen: false);
 
     if (widget.note == null) {
-      provider.addNote(
+      noteProvider.addNote(
         Note(
           id: DateTime.now().toString(),
           title: title,
@@ -55,16 +56,16 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
         ),
       );
     } else {
-      widget.note!
-        ..title = title
-        ..content = content
-        ..tags = _selectedTags
-        ..date = DateTime.now();
-      provider.updateNote(widget.note!);
+      widget.note!.title = title;
+      widget.note!.content = content;
+      widget.note!.tags = _selectedTags;
+      widget.note!.date = DateTime.now();
+      noteProvider.updateNote(widget.note!);
     }
     Navigator.pop(context);
   }
 
+  // Hiển thị hộp thoại chọn thẻ
   void _showTagSelectionDialog() {
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
     final newTagController = TextEditingController();
@@ -214,7 +215,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
                     maxLines: null,
                     style: const TextStyle(fontSize: 16, height: 1.5),
                     decoration: const InputDecoration(
-                      hintText: 'Bắt đầu viết điều gì đó...',
+                      hintText: 'Hãy viết điều gì đó...',
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(16),
                     ),
@@ -262,7 +263,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
                                       const SizedBox(width: 4),
                                       GestureDetector(
                                         onTap: () => setState(() => _selectedTags.remove(tag)),
-                                        child: const Icon(Icons.close, size: 14, color: Colors.black54),
+                                        child: const Icon(Icons.close, size: 14, color: Color.fromARGB(137, 16, 16, 16)),
                                       ),
                                     ],
                                   ),
@@ -274,7 +275,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
                 ),
                 const SizedBox(height: 32),
                 
-                // Nút lưu lớn ở dưới (Nếu cần)
+                // Nút lưu ghi chú
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -295,7 +296,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
     );
   }
 
-  // Widget helper để tạo container trắng có shadow nhẹ giống trang chủ
+  // Widget helper để tạo container trắng 
   Widget _buildCardContainer({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
@@ -303,7 +304,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

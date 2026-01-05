@@ -12,7 +12,6 @@ class SettingPage extends StatelessWidget {
     final authProvider = context.watch<AuthProvider>();
     final colorScheme = Theme.of(context).colorScheme;
     
-    // Màu xám nhẹ đồng bộ toàn app
     const Color lightGrayBackground = Color(0xFFF5F7FA);
 
     return Scaffold(
@@ -36,7 +35,7 @@ class SettingPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. THÔNG TIN NGƯỜI DÙNG (Card Trắng)
+              // Thông tin người dùng
               _buildSectionTitle('Tài khoản'),
               const SizedBox(height: 12),
               _buildCardContainer(
@@ -48,11 +47,11 @@ class SettingPage extends StatelessWidget {
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: colorScheme.primary.withOpacity(0.2), width: 2),
+                          border: Border.all(color: colorScheme.primary.withValues(alpha: 0.2), width: 2),
                         ),
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundColor: colorScheme.primaryContainer.withOpacity(0.5),
+                          backgroundColor: colorScheme.primaryContainer.withValues(alpha: 0.5),
                           child: Icon(Icons.person_rounded, size: 30, color: colorScheme.primary),
                         ),
                       ),
@@ -69,7 +68,7 @@ class SettingPage extends StatelessWidget {
                             Text(
                               authProvider.currentUserEmail.isNotEmpty
                                   ? authProvider.currentUserEmail
-                                  : 'Khách truy cập',
+                                  : '@email.com',
                               style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                             ),
                           ],
@@ -96,17 +95,17 @@ class SettingPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // 2. TÙY CHỌN ỨNG DỤNG (Card Trắng chứa các ListTile)
+              // Tùy chọn ứng dụng
               _buildSectionTitle('Ứng dụng'),
               const SizedBox(height: 12),
               _buildCardContainer(
                 child: Column(
                   children: [
                     _buildSettingTile(
-                      icon: Icons.palette_outlined,
+                      icon: Icons.notifications_outlined,
                       color: Colors.blue,
-                      title: 'Giao diện',
-                      subtitle: 'Theo hệ thống',
+                      title: 'Thông báo',
+                      subtitle: 'Đặt tùy chọn thông báo',
                       onTap: () {},
                     ),
                     Divider(height: 1, indent: 56, color: Colors.grey.shade100),
@@ -114,14 +113,14 @@ class SettingPage extends StatelessWidget {
                       icon: Icons.info_outline_rounded,
                       color: Colors.green,
                       title: 'Về ứng dụng',
-                      subtitle: 'Notes Manager v1.0.0',
+                      subtitle: 'Notes App v1.0.0',
                       onTap: () {
                         showAboutDialog(
                           context: context,
-                          applicationName: 'Notes Manager',
+                          applicationName: 'Notes App',
                           applicationVersion: '1.0.0',
                           applicationIcon: Icon(Icons.note_alt_rounded, size: 48, color: colorScheme.primary),
-                          children: [const Text('Ứng dụng quản lý ghi chú đơn giản và hiệu quả.')],
+                          children: [const Text('Ứng dụng ghi chú đơn giản và hiệu quả.')],
                         );
                       },
                     ),
@@ -131,7 +130,7 @@ class SettingPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // 3. HÀNH ĐỘNG KHÁC (Đăng xuất)
+              // Đăng xuất
               _buildSectionTitle('Hành động'),
               const SizedBox(height: 12),
               _buildCardContainer(
@@ -151,19 +150,13 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  // --- Widget Helpers để đồng bộ UI ---
-
+  // Widget Helpers để đồng bộ UI
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 4),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey.shade500,
-          letterSpacing: 1.2,
-        ),
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey.shade500, letterSpacing: 1.2,),
       ),
     );
   }
@@ -175,7 +168,7 @@ class SettingPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -199,14 +192,14 @@ class SettingPage extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, color: color, size: 22),
       ),
       title: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.w600, color: titleColor ?? Colors.black87),
+        style: TextStyle(fontWeight: FontWeight.w600, color: titleColor != null ? titleColor! : Colors.black87),
       ),
       subtitle: Text(subtitle, style: TextStyle(fontSize: 13, color: Colors.grey.shade500)),
       trailing: const Icon(Icons.chevron_right_rounded, color: Colors.grey),

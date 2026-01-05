@@ -121,11 +121,12 @@ class NoteProvider with ChangeNotifier {
 
     // Thêm thẻ từ các ghi chú
     for (var note in _noteBox.values) {
-      tags.addAll(note.tags);
+      for(var tag in note.tags) {
+        tags.add(tag);
+      }
     }
 
     List<String> tagList = tags.toList();
-    // Giữ 'Tất cả' ở đầu, sắp xếp phần còn lại
     tagList.remove('Tất cả');
     tagList.sort();
     
@@ -134,19 +135,19 @@ class NoteProvider with ChangeNotifier {
 
   // THÊM
   void addNote(Note note) {
-    _noteBox.add(note); // Hive tự sinh key hoặc bạn có thể dùng .put(id, note)
+    _noteBox.add(note);
     notifyListeners();
   }
 
   // SỬA
   void updateNote(Note note) {
-    note.save(); // Nhờ kế thừa HiveObject nên chỉ cần gọi save()
+    note.save();
     notifyListeners();
   }
 
   // XÓA
   void deleteNote(Note note) {
-    note.delete(); // Xóa trực tiếp khỏi Hive
+    note.delete();
     notifyListeners();
   }
 

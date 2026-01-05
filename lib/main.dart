@@ -46,20 +46,12 @@ class MyApp extends StatelessWidget {
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
 
     return MaterialApp(
-      title: 'Notes Manager',
+      title: 'Notes App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
-      themeMode: ThemeMode.system,
       home: isLoggedIn ? const HomePage() : const LoginPage(),
     );
   }
