@@ -3,13 +3,33 @@ import 'package:notes_manager/screens/add_edit_note_page.dart';
 import 'package:notes_manager/screens/setting_page.dart';
 import 'package:provider/provider.dart';
 import '../providers/note_provider.dart';
+import '../providers/auth_provider.dart';
 import '../widgets/home/notes_search_bar.dart';
 import '../widgets/home/tag_filter_list.dart';
 import '../widgets/home/note_card.dart';
 import '../widgets/home/empty_notes_state.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+      final currentUser = authProvider.currentUser;
+      if (currentUser != null) {
+        noteProvider.setCurrentUserId(currentUser.id);
+      }
+    });
+  }
   
   @override
   Widget build(BuildContext context) {

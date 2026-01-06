@@ -19,11 +19,15 @@ class Note extends HiveObject {
   @HiveField(4)
   DateTime date;
 
+  @HiveField(5)
+  String userId;
+
   Note({
     required this.id,
     required this.title,
     required this.content,
     required this.tags,
     required this.date,
+    required this.userId,
   });
 }

@@ -18,9 +18,18 @@ class NoteProvider with ChangeNotifier {
   String _searchQuery = '';
   String _selectedTag = 'Tất cả';
   List<String> _customTags = [];
+  String _currentUserId = '';
+
+  String get currentUserId => _currentUserId;
 
   String get selectedTag {
     return _selectedTag;
+  }
+
+  // Set current user ID
+  void setCurrentUserId(String userId) {
+    _currentUserId = userId;
+    notifyListeners();
   }
 
   // Khởi tạo tags box
@@ -83,9 +92,14 @@ class NoteProvider with ChangeNotifier {
     return _customTags.contains(tag);
   }
 
-  // Lấy danh sách ghi chú từ Hive và lọc
+  // Lấy danh sách ghi chú từ Hive và lọc theo user hiện tại
   List<Note> get notes {
-    List<Note> allNotes = _noteBox.values.toList();
+    List<Note> allNotes = [];
+    for (var note in _noteBox.values) {
+      if (note.userId == _currentUserId) {
+        allNotes.add(note);
+      }
+    }
     allNotes.sort((a, b) {
       return b.date.compareTo(a.date);
     });
@@ -119,10 +133,12 @@ class NoteProvider with ChangeNotifier {
       tags.add(tag);
     }
 
-    // Thêm thẻ từ các ghi chú
+    // Thêm thẻ từ các ghi chú của user hiện tại
     for (var note in _noteBox.values) {
-      for(var tag in note.tags) {
-        tags.add(tag);
+      if (note.userId == _currentUserId) {
+        for(var tag in note.tags) {
+          tags.add(tag);
+        }
       }
     }
 

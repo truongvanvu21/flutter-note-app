@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/note.dart';
 import '../providers/note_provider.dart';
+import '../providers/auth_provider.dart';
 
 class AddEditNotePage extends StatefulWidget {
   final Note? note;
@@ -44,6 +45,15 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final currentUser = authProvider.currentUser;
+
+    if (currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vui lòng đăng nhập để tạo ghi chú')),
+      );
+      return;
+    }
 
     if (widget.note == null) {
       noteProvider.addNote(
@@ -53,6 +63,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
           content: content,
           tags: _selectedTags,
           date: DateTime.now(),
+          userId: currentUser.id,
         ),
       );
     } else {
